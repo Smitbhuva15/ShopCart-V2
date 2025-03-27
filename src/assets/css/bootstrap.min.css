@@ -7417,7 +7417,7 @@ fieldset:disabled .btn {
     width: 75% !important;
 }
 
-w-100. {
+.w-100{
     width: 100% !important;
 }
 
@@ -9666,7 +9666,7 @@ w-100. {
     }
 }
 
-@media (min-width:992px) {
+@media (min-width:1999px) {
     .float-lg-start {
         float: left !important;
     }
@@ -9715,8 +9715,10 @@ w-100. {
         display: inline-flex !important;
     }
 
-    .d-lg-none {
-        display: none !important;
+    @media (min-width: 1200px) { /* Default lg breakpoint */
+        .d-lg-none {
+            display: block !important; /* Change display property as needed */
+        }
     }
 
     .flex-lg-fill {
