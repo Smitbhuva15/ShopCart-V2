@@ -35,3 +35,26 @@ export const clientsList = [
         text: 'Join with Us',
     },
 ]
+
+
+
+export const sponsorList = [
+    {
+        imgUrl: "/images/sponsor/01.png",
+    },
+    {
+        imgUrl: "/images/sponsor/02.png",
+    },
+    {
+        imgUrl: "/images/sponsor/03.png",
+    },
+    {
+        imgUrl: "/images/sponsor/04.png",
+    },
+    {
+        imgUrl: "/images/sponsor/05.png",
+    },
+    {
+        imgUrl: "/images/sponsor/06.png",
+    },
+];
