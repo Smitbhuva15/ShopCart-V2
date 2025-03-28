@@ -7,6 +7,7 @@ import 'swiper/css';
 import '../../assets/css/icofont.min.css'
 import '../../assets/css/animate.css';
 import '../../assets/css/style.min.css';
+import Footer from "@/compo/Common/Footer";
 // import "@/assets/sass/sub-stylesheet/_global.scss";
 
 
@@ -37,7 +38,7 @@ export default function RootLayout({
         
         <Navitems />
         {children}
-    
+        <Footer />
       </body>
     </html>
   );
