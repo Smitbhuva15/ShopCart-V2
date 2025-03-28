@@ -79,3 +79,30 @@ export const aboutList = [
         desc: 'Distinctively provide acces mutfuncto users whereas communicate leveraged services',
     },
 ]
+
+export const contactList = [
+  {
+    imgUrl: "/images/icon/01.png",
+    imgAlt: "contact icon",
+    title: "Office Address",
+    desc: "1305 Maple Drive, Sixth Avenue, New Delhi, India",
+  },
+  {
+    imgUrl: "/images/icon/02.png",
+    imgAlt: "contact icon",
+    title: "Phone number",
+    desc: "+91 98574 09753,78098 45368",
+  },
+  {
+    imgUrl: "/images/icon/03.png",
+    imgAlt: "contact icon",
+    title: "Send email",
+    desc: "admin@shopcart.com",
+  },
+  {
+    imgUrl: "/images/icon/04.png",
+    imgAlt: "contact icon",
+    title: "Our website",
+    desc: "www.shopcart.com",
+  },
+];
