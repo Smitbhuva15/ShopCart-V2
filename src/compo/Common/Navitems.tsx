@@ -55,10 +55,7 @@ export default function Navitems() {
                                     <li><Link href="/blog" onClick={handelclose}>Blog</Link></li>
                                     <li><Link href="/about" onClick={handelclose}>About</Link></li>
                                     <li><Link href="/contact" onClick={handelclose}>Contact</Link></li>
-                                    <li><Link href="/listing" onClick={handelclose}>Listing</Link></li>
                                     <li><Link href="/yourorder" onClick={handelclose}>Your Order</Link></li>
-                                    <li><Link href="/order" onClick={handelclose}>Order</Link></li>
-
                                 </ul>
 
 

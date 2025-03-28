@@ -1,9 +1,11 @@
+import Banner from "@/compo/Home/Banner";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div>
-      app
+    <div >
+      <Banner />
+      
     </div>
   );
 }
