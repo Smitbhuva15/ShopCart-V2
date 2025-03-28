@@ -40,8 +40,9 @@ export default function HomeCategory() {
                                             <div className='cate-icon'>
                                                 <i className={val.iconName}></i>
                                             </div>
-                                            <Link
-                                                href="/shop"><h6>{val.title}</h6></Link>
+
+                                            <h6>{val.title}</h6>
+
                                         </div>
                                     </div>
                                 </Link>

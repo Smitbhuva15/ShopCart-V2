@@ -19,6 +19,11 @@ export default function Navitems() {
         }
     })
 
+    if (typeof window !== "undefined") {
+        
+    }
+
+
     const handelclose = () => {
         setMenuToggle(!menuToggle);
     }

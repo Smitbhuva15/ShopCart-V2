@@ -65,3 +65,10 @@ model Order {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model Resister {
+  id       String @id @default(uuid())
+  username String
+  email    String
+  phone_no String
+}
