@@ -1,3 +1,4 @@
+import AboutUs from "@/compo/Home/AboutUs";
 import Banner from "@/compo/Home/Banner";
 import CategoryShow from "@/compo/Home/CategoryShow";
 import HomeCategory from "@/compo/Home/HomeCategory";
@@ -11,7 +12,7 @@ export default function Home() {
       <HomeCategory />
       <CategoryShow />
       <Resister />
-      
+      <AboutUs />
     </div>
   );
 }

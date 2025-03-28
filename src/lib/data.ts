@@ -114,3 +114,21 @@ export const ProductData = [
         id: 8,
     },
 ]
+
+export const countList = [
+    {
+        iconName: 'icofont-users-alt-4',
+        count: 19855,
+        text: 'Marchant Enrolled',
+    },
+    {
+        iconName: 'icofont-graduate-alt',
+        count: 70,
+        text: 'Certified Courses',
+    },
+    {
+        iconName: 'icofont-notification',
+        count: 130,
+        text: 'Rewards and GitCards',
+    },
+]
