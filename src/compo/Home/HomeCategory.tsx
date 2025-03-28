@@ -3,9 +3,11 @@ import { categoryList } from '@/lib/data'
 import Link from 'next/link';
 
 const subTitle = "Choose Any Products";
-const title = "uy Anything, Anytime, with Us";
+const title = "Buy Anything, Anytime, with Us";
 const btnText = "Get Started Now";
 
+
+// onClick={() => window.scrollTo(0, 0)}
 
 export default function HomeCategory() {
     return (
