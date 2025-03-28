@@ -18,8 +18,8 @@ export default function Navitems() {
             setHeaderFixed(false);
         }
     })
- 
-    const handelclose=()=>{
+
+    const handelclose = () => {
         setMenuToggle(!menuToggle);
     }
 
@@ -42,7 +42,6 @@ export default function Navitems() {
                             <div className='logo'>
                                 <Link href="/">
                                     <img src="/images/logo/logo.png" alt="Logo" />
-
                                 </Link>
                             </div>
                         </div>
@@ -66,7 +65,7 @@ export default function Navitems() {
                             <Link href="/login" className='d-none d-xl-block'>Log In</Link>
 
                             {/* menu toggle */}
-                            <div onClick={()=>{setMenuToggle(!menuToggle)}} className={`header-bar d-lg-none  ${ menuToggle ?"active":""}`}>
+                            <div onClick={() => { setMenuToggle(!menuToggle) }} className={`header-bar d-lg-none  ${menuToggle ? "active" : ""}`}>
                                 <span></span>
                                 <span></span>
                                 <span></span>
@@ -74,10 +73,10 @@ export default function Navitems() {
 
                             {/*scoial toggle */}
                             <div className='ellepsis-bar d-lg-none'
-                            onClick={()=>{setSocialToggle(!socialToggle)}}>
-                            <i className="icofont-info-square"></i>
+                                onClick={() => { setSocialToggle(!socialToggle) }}>
+                                <i className="icofont-info-square"></i>
                             </div>
-                            
+
 
                         </div>
                     </div>
