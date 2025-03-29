@@ -59,7 +59,7 @@ export default function Contact() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
-    console.log(data)
+    
     try {
         const res = await fetch("/api/contact", {
             method: "POST",
