@@ -1,7 +1,13 @@
+import BlogMainPage from '@/compo/Blog/BlogMainPage'
+import PageHeader from '@/compo/Common/PageHeader'
 import React from 'react'
 
 export default function Blog() {
   return (
-    <div>Blog</div>
+    <>
+      <PageHeader title="Our Blog Page" curPage="Blog" />
+      <BlogMainPage />
+    </>
+
   )
 }
