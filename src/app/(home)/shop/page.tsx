@@ -1,7 +1,12 @@
-import React from 'react'
+import PageHeader from '@/compo/Common/PageHeader'
+import ShopPage from '@/compo/Shop/ShopPage'
+
 
 export default function Shop() {
   return (
-    <div>Shop</div>
+   <>
+   <PageHeader title="Our Shop Page" curPage="Shop" />
+   <ShopPage />
+   </>
   )
 }

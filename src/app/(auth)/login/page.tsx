@@ -1,11 +1,67 @@
+"use client"
 import Link from 'next/link'
-import React from 'react'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useForm, SubmitHandler } from "react-hook-form"
+import toast, { Toaster } from 'react-hot-toast';
+import { useState } from 'react';
+
+
+
+type Inputs = {
+  email: string;
+  password: string;
+};
+
+const schema = yup
+  .object()
+  .shape({
+    email: yup.string().email("proper email is required").required(),
+    password: yup.string().min(8, "Password must be at least 8 characters").required(),
+
+  })
+  .required();
 
 
 const title = "Login";
 const btnText = "Login Now"
 
 export default function Login() {
+
+  const [isLoading, setIsLoading] = useState(false);
+
+
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      reset,
+    } = useForm<Inputs>({
+      resolver: yupResolver(schema),
+    });
+
+    const handleFormError = () => {
+      Object.values(errors).forEach((error) => {
+        const fieldError = error?.message as string;
+        if (fieldError) {
+          toast.error(fieldError);
+        }
+      });
+    }
+
+    const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+      setIsLoading(true)
+      
+      try {
+       
+      } catch (error) {
+        console.log(error, "error found");
+      }
+      finally {
+        setIsLoading(false)
+        
+      }
+    };
 
   return (
     <div>
@@ -14,22 +70,34 @@ export default function Login() {
           <div className='account-wrapper'>
 
             <h3 className='title'>{title}</h3>
-            <form className='account-form'>
+            <form className='account-form' onSubmit={handleSubmit(onSubmit, handleFormError)}>
               <div className='form-group'>
-                <input type="email" name="email" id="email" placeholder='Email Address *' required />
+                <input type="email"  id="email" placeholder='Email Address *' {...register("email")} required />
               </div>
               <div className='form-group'>
-                <input type="password" name="password" id="password" placeholder='Password * ' required />
+                <input type="password" id="password" placeholder='Password * ' {...register("password")} required />
               </div>
 
 
 
               <div className='form-group'>
-                <button type='submit' className='d-block lab-btn'>
-                  <span>
-                    {btnText}
-                  </span>
-                </button>
+              {
+                  isLoading ? (
+                    <button type='submit' className='d-block lab-btn'>
+                      <span>
+                        Loading...
+                      </span>
+                    </button>
+                  )
+                    :
+                    (
+                      <button type='submit' className='d-block lab-btn'>
+                        <span>
+                          {btnText}
+                        </span>
+                      </button>
+                    )
+                }
               </div>
             </form>
 
