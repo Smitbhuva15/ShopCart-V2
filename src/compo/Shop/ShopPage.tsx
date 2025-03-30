@@ -2,6 +2,7 @@
 import { useState } from "react";
 import ProductCard from "./ProductCard";
 import { product_data } from "@/lib/product";
+import Pagination from "./Pagination";
 
 
 const showResult="Showing 01-07 of 63 Result";
@@ -17,6 +18,9 @@ export default function ShopPage() {
       const indextOfLastProduct=currentPage*productPerPag;
       const indextOfFirstProduct=indextOfLastProduct-productPerPag;
       const currentProducts=products.slice(indextOfFirstProduct,indextOfLastProduct);
+      const paginate=(pageNumber:number)=>{
+        setCurrentPage(pageNumber);
+    }
  
  
 
@@ -44,7 +48,12 @@ export default function ShopPage() {
                                 <ProductCard  gridList={gridList}  products={ currentProducts}/>
                             </div>
         
-                            
+                            <Pagination 
+                            productPerPag={productPerPag}
+                            totalProducts={products.length}
+                            paginate={paginate}
+                            activePage={currentPage}
+                            />
                          </article>
                         </div>
       </div>
