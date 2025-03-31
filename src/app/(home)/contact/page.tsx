@@ -30,8 +30,8 @@ const schema = yup
     Name: yup.string().min(3, "userName must be at least 3 characters").required(),
     phone_no: yup.string().length(10, "Contact Number must be exact 10 characters").required("Contact Number is require"),
     email: yup.string().email("proper email is required").required(),
-    subject: yup.string().min(10, "Subject must be at least 10 characters").required(),
-    message: yup.string().min(10, "message must be at least 10 characters").required()
+    subject:yup.string().min(10,"Subject must be at least 10 characters").required(),
+    message:yup.string().min(10,"message must be at least 10 characters").required()
 
   })
   .required();
@@ -47,8 +47,8 @@ export default function Contact() {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
-
-
+  
+       
   const handleFormError = () => {
     Object.values(errors).forEach((error) => {
       const fieldError = error?.message as string;
@@ -59,28 +59,28 @@ export default function Contact() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
-
+    
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+        const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
 
-      if (res.ok) {
-        const message = await res.json();
-        reset()
-        toast.success(message.message)
+        if (res.ok) {
+            const message = await res.json();
+            reset()
+            toast.success(message.message)
 
-      }
-      else {
-        const errmessage = await res.json();
-        toast.error(errmessage.message)
-      }
+        }
+        else{
+            const errmessage = await res.json();
+            toast.error(errmessage.message)
+        }
     } catch (error) {
-      console.log(error, "error found");
+        console.log(error, "error found");
     }
-  };
+};
 
   return (
     <div>
@@ -132,25 +132,25 @@ export default function Contact() {
           </div>
 
           <div className='section-wrapper'>
-            <form className='contact-form' onSubmit={handleSubmit(onSubmit, handleFormError)}>
+            <form className='contact-form' onSubmit={handleSubmit(onSubmit, handleFormError )}>
               <div className='form-group'>
-                <input type="text" id="name" placeholder='Your Name *' {...register("Name")} />
+                <input type="text" id="name" placeholder='Your Name *' {...register("Name")}/>
 
               </div>
               <div className='form-group'>
-                <input type="email" id="email" placeholder='Your Email *' {...register("email")} />
+                <input type="email" id="email" placeholder='Your Email *' {...register("email")}/>
 
               </div>
               <div className='form-group'>
-                <input type="number" id="number" placeholder='Phone Number *' {...register("phone_no")} />
+                <input type="number"  id="number" placeholder='Phone Number *' {...register("phone_no")}/>
 
               </div>
               <div className='form-group'>
-                <input type="text" id="subject" placeholder='Subject' {...register("subject")} />
+                <input type="text"  id="subject" placeholder='Subject' {...register("subject")}/>
 
               </div>
               <div className='form-group w-100'>
-                <textarea id="message" rows={8} placeholder='Your Message' className='textarea ' {...register("message")}></textarea>
+                <textarea  id="message" rows={8} placeholder='Your Message' className='textarea ' {...register("message")}></textarea>
               </div>
               <div className='form-group w-100 text-center'>
                 <button className='lab-btn'>
@@ -163,9 +163,9 @@ export default function Contact() {
         </div>
       </div>
       <Toaster
-        position="bottom-right"
-        reverseOrder={false}
-      />
+                position="bottom-right"
+                reverseOrder={false}
+            />
 
     </div>
   )

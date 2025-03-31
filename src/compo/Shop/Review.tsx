@@ -1,43 +1,82 @@
 "use client"
 import React, { useState } from 'react'
-
+import toast, { Toaster } from 'react-hot-toast';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useForm, SubmitHandler } from "react-hook-form"
+import { ReviewList } from '@/lib/review';
 
 const reviwtitle = "Add a Review";
 
-let ReviewList = [
-    {
-        imgUrl: "/images/instructor/01.jpg",
-        imgAlt: "Client thumb",
-        name: "Ganelon Boileau",
-        date: "Posted on feb 17, 2021 at 9:07 am",
-        desc: "This cap provides great shade and keeps me cool. I wear it every time I go out.",
-    },
-    {
-        imgUrl: "/images/instructor/02.jpg",
-        imgAlt: "Client thumb",
-        name: "Morgana Cailot",
-        date: "Posted on Jun 10, 2022 at 6:57 am",
-        desc: "This T-shirt is incredibly soft and fits perfectly. The fabric is breathable, and it doesn’t shrink after washing. Definitely buying more colors!",
-    },
-    {
-        imgUrl: "/images/instructor/03.jpg",
-        imgAlt: "Client thumb",
-        name: "Telford Bois",
-        date: "Posted on July 03, 2017 at 9:01 pm",
-        desc: "These shoes feel like walking on clouds! The cushioning is amazing, and they fit true to size. Definitely worth the purchase.",
-    },
-    {
-        imgUrl: "/images/instructor/04.jpg",
-        imgAlt: "Client thumb",
-        name: "Cher Daviau",
-        date: "Posted on Jun 11, 2024 at 1:37 pm",
-        desc: "The design is sleek, and I can throw it in my bag without worrying about leaks. Great quality!.",
-    },
-];
+
+
+type Inputs={
+    fullName :string;
+    email :string;
+    message:string
+}
+
+
+const schema = yup
+    .object()
+    .shape({
+        fullName: yup.string().min(3, "userName must be at least 3 characters").required(),
+        email: yup.string().email("proper email is required").required(),
+        message: yup.string().min(10, "message must be at least 10 characters").required()
+
+    })
+    .required();
+
+   
 
 const Review = () => {
 
     const [reviewShow, setReviewShow] = useState(true);
+
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+      } = useForm<Inputs>({
+        resolver: yupResolver(schema),
+      });
+
+      const handleFormError = () => {
+        Object.values(errors).forEach((error) => {
+          const fieldError = error?.message as string;
+          if (fieldError) {
+            toast.error(fieldError);
+          }
+        });
+      };
+
+      const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+
+        try {
+          const res = await fetch("/api/review", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+    
+          if (res.ok) {
+            const message = await res.json();
+            reset()
+            toast.success(message.message)
+    
+          }
+          else {
+            const errmessage = await res.json();
+            toast.error(errmessage.message)
+          }
+        } catch (error) {
+          console.log(error, "error found");
+        }
+      };
+    
+
 
     return (
         <>
@@ -80,21 +119,16 @@ const Review = () => {
                             <div className='review-title'>
                                 <h5>{reviwtitle}</h5>
                             </div>
-                            <form action='action' className='row'>
-                                <div className='col-md-4 col-12'>
-                                    <input type="text" name='name' id='name' placeholder='Full Name *' />
+                            <form action='action' className='row' onSubmit={handleSubmit(onSubmit, handleFormError)}>
+                                <div className='col-md-6 col-12'>
+                                    <input type="text" id='name' placeholder='Full Name *'  {...register("fullName")} />
                                 </div>
-                                <div className='col-md-4 col-12'>
-                                    <input type="email" name='Email' id='name' placeholder='Full Name *' />
+                                <div className='col-md-6 col-12'>
+                                    <input type="email"  id='name' placeholder='email *'  {...register("email")} />
                                 </div>
-                                <div className='col-md-4 col-12'>
-                                    <div className='rating'>
-                                        <span className='me-2'>Your Rating </span>
-                                        
-                                    </div>
-                                </div>
+
                                 <div>
-                                    <textarea name="message" id="message" rows={8} placeholder='Type Here Message' className='textarea'> </textarea>
+                                    <textarea id="message" rows={8} placeholder='Type Here Message' className='textarea'  {...register("message")}> </textarea>
                                 </div>
                                 <div className='col-12'>
                                     <button type='submit' className='defualt-butoon'>
@@ -123,7 +157,7 @@ const Review = () => {
                                     <li> Designed for everyday wear, it features a soft, breathable fabric that keeps you cool throughout the day!</li>
                                     <li> The classic fit, crew neckline, and durable stitching make it a versatile choice for any occasion . </li>
                                     <li>
-                                    Available in a variety of colors and sizes, this T-shirt is perfect for layering or wearing on its own.
+                                        Available in a variety of colors and sizes, this T-shirt is perfect for layering or wearing on its own.
                                     </li>
                                     <li>
                                         asperiores sed perferendis cumque impedit aliquid. Amet aspernatur neque.
@@ -134,6 +168,10 @@ const Review = () => {
                         <p> Assumenda suscipit, voluptatem et ea explicabo ab magnam esse. Eos saepe, fuga quae, aperiam expedita dolores, labore neque assumenda non omnis itaque accusamus veritatis? Ipsum dolores quibusdam voluptates magni cum cupiditate nisi est ut impedit, magnam odio omnis porro nobis nihil sit quidem eius molestiae vitae repellat unde expedita fuga. Repellendus animi praesentium quisquam dicta delectus in maiores corporis et facilis.</p>
                     </div>
                 }
+                <Toaster
+                    position="bottom-right"
+                    reverseOrder={false}
+                />
             </div>
         </>
     )

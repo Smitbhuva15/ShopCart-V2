@@ -21,7 +21,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  itmes     Item[]  
+  itmes     Item[]
   orders    Order[]
 }
 
@@ -47,7 +47,7 @@ model Item {
   stock        Int?
   image        String
   userId       String
-  user         User     @relation(fields: [userId], references: [id],onDelete: Cascade) 
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -71,4 +71,13 @@ model Resister {
   username String
   email    String
   phone_no String
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
