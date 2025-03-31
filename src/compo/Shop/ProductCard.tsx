@@ -19,11 +19,14 @@ type producttype={
     }[]
 }
 export default function ProductCard({ gridList,products}:producttype) {
+    console.log(products)
   return (
     <div className={`shop-product-wrap row justify-content-center ${gridList ? "grid" : "list"}`}>
   {
                 products.map((product, i) => (
+                
                     <div key={i} className='col-lg-4 col-md-6 col-12'>
+                        
 
                         {/* product grid item */}
                         <div className='product-item'>
