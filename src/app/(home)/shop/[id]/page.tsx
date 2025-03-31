@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import ProductDisplay from '@/compo/Shop/ProductDisplay';
 import { product_data } from '@/lib/product';
 import { Autoplay } from 'swiper/modules';
+import Review from '@/compo/Shop/Review';
 
 
 export default function page({ params }: { params: { id: string } }) {
@@ -59,7 +60,7 @@ export default function page({ params }: { params: { id: string } }) {
                                 {/* review */}
 
                                 <div className='review'>
-                                    {/* <Review /> */}
+                                    <Review />
                                 </div>
 
 
