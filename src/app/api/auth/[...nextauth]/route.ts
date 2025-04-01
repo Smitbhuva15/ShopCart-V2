@@ -5,6 +5,35 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/prishma";
 
+type jwttype={
+    token:{
+        id:string;
+        firstName:string;
+        email:string
+    },
+    user:{
+        id:string;
+        firstName:string;
+        email:string
+
+    }
+}
+
+type sessiontype={
+    token:{
+        id:string;
+        firstName:string;
+        email:string
+    },
+    session:{
+        user:{
+            id:string;
+            firstName:string;
+            email:string
+        }
+    }
+   
+}
 
 export const authOptions = {
     adapter: PrismaAdapter(prisma),

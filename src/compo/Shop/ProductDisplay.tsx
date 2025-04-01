@@ -1,4 +1,5 @@
 "use client"
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
@@ -30,20 +31,14 @@ type Inputs = {
 }
 
 
-type LocalItemType = {
-    id: string;
-    img: string;
-    name: string;
-    price: number;
-    quantity: number;
-    size: string;
-    color: string;
-    coupon: string | undefined;
-};
+
 
 
 export default function ProductDisplay({ item }: itemtype) {
 
+    const {data:session,status}=useSession();
+    
+  
     const [preQuntity, setPreQuntity] = useState(item.quantity);
     const handelDecrease = (e: React.MouseEvent<HTMLInputElement>) => {
         if (preQuntity > 1) {
@@ -77,30 +72,39 @@ export default function ProductDisplay({ item }: itemtype) {
         else if (preQuntity===0) {
             toast.error("quantity is required")
         }
-        const product={
-            id :item.id,
-            img:item.img,
-            name:item.name,
-            price:item.price,
-            quantity:preQuntity,
-            size:data.size,
-            color:data.color,
-            coupon :data.coupon,
-         }
+        const product = {
+            userId: session?.user?.id ?? "", 
+            productId: item?.id ?? "",
+            quantity: preQuntity ?? 1,
+            size: data?.size || "default",
+            color: data?.color || "default",
+            coupon: data?.coupon || null,
+          };
+  try {
+    const response=await fetch("/api/addproduct",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(product)
+    })
 
-         const existingCart: LocalItemType[] = JSON.parse(localStorage.getItem("cart") || "[]");
-         const existingProductIndex=existingCart.findIndex((item)=>item.id===item.id);
-         if(existingProductIndex!==-1){
-           existingCart[existingProductIndex].quantity+=preQuntity;
-        //    console.log("runnnnnnnnnnnnnnnnnn")
-         }
-         else{
-            // console.log(product)
-           existingCart.push(product);
-         }
-
-         localStorage.setItem("cart",JSON.stringify(existingCart));
-
+    if(response.ok){
+        const data=await response.json();
+        console.log(data.message)
+        reset()
+        setPreQuntity(0)
+    }
+    else{
+        const errmessage=await response.json();
+        console.log(errmessage.message)
+        
+    }
+    
+  } catch (error) {
+    console.log("error found",error)
+  }
+       
 
     };
 

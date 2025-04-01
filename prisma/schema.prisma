@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   firstName String
   lastName  String
-  email     String   @unique
+  email     String    @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   itmes     Item[]
   orders    Order[]
+  produtcs  Product[]
 }
 
 model Contact {
@@ -67,10 +68,12 @@ model Order {
 }
 
 model Resister {
-  id       String @id @default(uuid())
-  username String
-  email    String
-  phone_no String
+  id        String   @id @default(uuid())
+  username  String
+  email     String
+  phone_no  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {
@@ -78,6 +81,19 @@ model Review {
   fullName  String
   email     String
   message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  productId String
+  quantity  Int
+  coupon    String?
+  color     String
+  size      String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
