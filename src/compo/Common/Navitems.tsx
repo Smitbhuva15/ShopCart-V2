@@ -2,14 +2,16 @@
 import Link from 'next/link';
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { signOut, useSession } from 'next-auth/react';
 // import 'bootstrap/dist/js/bootstrap.min.js';
 
 export default function Navitems() {
     const [menuToggle, setMenuToggle] = useState(false);
     const [socialToggle, setSocialToggle] = useState(false);
     const [headerFixed, setHeaderFixed] = useState(false);
+    const {data:session,status}=useSession();
 
-
+      
     window.addEventListener("scroll", () => {
         if (window.scrollY > 200) {
             setHeaderFixed(true);
@@ -66,8 +68,21 @@ export default function Navitems() {
                             </div>
 
                             {/* sign in and log in */}
-                            <Link href="/singup" className='lab-btn me-3 d-none d-xl-block'>Create Account</Link>
-                            <Link href="/login" className='d-none d-xl-block'>Log In</Link>
+                            {
+                                session ?(
+                                    <>
+                                    <button className='lab-btn me-3 d-none d-xl-block' onClick={() => signOut()}>SignOut</button>
+                                    </>
+                                )
+                                :
+                                (<>
+                                    <Link href="/singup" className='lab-btn me-3 d-none d-xl-block'>Create Account</Link>
+                                    <Link href="/login" className='d-none d-xl-block'>Log In</Link>
+
+                                    </>
+                                )
+                            }
+                          
 
                             {/* menu toggle */}
                             <div onClick={() => { setMenuToggle(!menuToggle) }} className={`header-bar d-lg-none  ${menuToggle ? "active" : ""}`}>

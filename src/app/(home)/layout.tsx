@@ -8,6 +8,7 @@ import '../../assets/css/icofont.min.css'
 import '../../assets/css/animate.css';
 import '../../assets/css/style.min.css';
 import Footer from "@/compo/Common/Footer";
+import AuthProvide from "../(auth)/AuthProvide";
 // import "@/assets/sass/sub-stylesheet/_global.scss";
 
 
@@ -35,10 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body  className={`${geistSans.variable} ${geistMono.variable} antialiased`}  >
-        
+        <AuthProvide>
         <Navitems />
         {children}
         <Footer />
+        </AuthProvide>
       </body>
     </html>
   );

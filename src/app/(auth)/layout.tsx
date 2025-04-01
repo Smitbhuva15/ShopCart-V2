@@ -6,6 +6,7 @@ import 'swiper/css';
 import '../../assets/css/icofont.min.css'
 import '../../assets/css/animate.css';
 import '../../assets/css/style.min.css';
+import AuthProvide from "./AuthProvide";
 
 
 const geistSans = Geist({
@@ -30,8 +31,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body  className={`${geistSans.variable} ${geistMono.variable} antialiased`}  >
+      
+      <body  className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
+        <AuthProvide>
         {children}
+        </AuthProvide>
       </body>
     </html>
   );
