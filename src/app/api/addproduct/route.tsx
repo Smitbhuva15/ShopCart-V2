@@ -5,7 +5,8 @@ import { NextResponse } from "next/server";
 export async function POST(req:Request) {
     
 try {
-    const {userId,productId,quantity,size,color,coupon}=await req.json();
+    const {userId,productId,quantity,size,color,coupon,img,price,name}=await req.json();
+  const newprice=price.toString();
     
    const productexist=await prisma.product.findFirst({
     where:{
@@ -15,6 +16,7 @@ try {
       }
     }
    })
+   
 
    const newquantity=productexist?.quantity+quantity
    
@@ -43,7 +45,12 @@ try {
         quantity,
         size,
         color,
-        coupon
+        coupon,
+         name,
+         img,
+         price:newprice,
+      
+       
       }
     })
    }

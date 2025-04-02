@@ -79,6 +79,9 @@ export default function ProductDisplay({ item }: itemtype) {
             size: data?.size || "default",
             color: data?.color || "default",
             coupon: data?.coupon || null,
+            img:item?.img,
+            name:item?.name,
+            price:item?.price
           };
   try {
     const response=await fetch("/api/addproduct",{

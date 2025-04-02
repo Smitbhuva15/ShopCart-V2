@@ -93,6 +93,9 @@ model Product {
   color     String
   size      String
   userId    String
+  name      String?
+  img       String?
+  price     String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

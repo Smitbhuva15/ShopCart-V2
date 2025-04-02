@@ -2,86 +2,63 @@
 import Link from "next/link";
 import PageHeader from "../Common/PageHeader";
 import { useEffect, useState } from "react";
+import { product_data } from "@/lib/product";
+
 
 type LocalItemType = {
-  item:
-  {id: string;
-  img: string;
-  name: string;
-  price: number;
-  quantity: number;
-  size: string;
-  color: string;
-  coupon: string | undefined;}
+    item:
+    {
+        id: string;
+        img: string;
+        name: string;
+        price: number;
+        quantity: number;
+        size: string;
+        color: string;
+        coupon: string | undefined;
+    }
 };
 
 
 export default function CartPage() {
-      const [cartItems, setCartItems] = useState([]);
 
-        useEffect (() => {
-              // fetch data from local storage
-              const storedCartItems = JSON.parse(localStorage.getItem("cart")|| "[]");
-              setCartItems(storedCartItems);
-          }, [])
+    const [items, setItems] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
 
-          const calculateTotalPrice = (item:LocalItemType) => {
-            return item.price * item.quantity;
+
+    const getCartData = async () => {
+
+        try {
+            const res = await fetch('/api/product', {
+                method: "GET",
+            })
+            if (res.ok) {
+                const message = await res.json();
+                console.log(message)
+                setItems(message.user.products)
+            }
+            else {
+                const errormessage = await res.json();
+                console.log(errormessage.message)
+            }
+        } catch (error) {
+            console.log("error found", error)
         }
+    }
+
     
-         // handel to increase
 
-    const handelIncrease = (item) => {
-      item.quantity += 1;
-      setCartItems([...cartItems]);
+    useEffect(() => {
+        getCartData();
+    }, [])
 
-      // update local storage with new cart itmes
-
-      localStorage.setItem("cart", JSON.stringify(cartItems));
-  }
-  // handel to decrease
-
-  const handelDecraese = (item) => {
-      if (item.quantity > 1) {
-          item.quantity -= 1;
-
-      }
-      setCartItems([...cartItems]);
-
-      // update local storage with new cart itmes
-
-      localStorage.setItem("cart", JSON.stringify(cartItems));
-  }
-
-  const handelItemRemove = (item) => {
-      const updatedCart = cartItems.filter((cartItem) => cartItem.id !== item.id);
-
-      // updated cart
-      setCartItems(updatedCart);
-
-      // update localStorage
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-  }
-
-
-  // cart subtotal
-  const cartSubtotal = cartItems.reduce((total, item) => {
-      return total + calculateTotalPrice(item);
-
-  }, 0)
-
-  // order total
-
-  const orderTotal = cartSubtotal;
-
-  
-  return (
-    <div>
-      <PageHeader title={"shop Cart"} curPage={"Cart Page"} />
-      <div className='shop-cart padding-tb'>
-        <div className='container'>
-          <div className='section-wrapper'>
-               {/* cart top */}
+    return (
+        <div>
+            <PageHeader title={"shop Cart"} curPage={"Cart Page"} />
+            <div className='shop-cart padding-tb'>
+                <div className='container'>
+                    <div className='section-wrapper'>
+                        {/* cart top */}
                         <div className='cart-top'>
                             <table>
                                 <thead>
@@ -126,7 +103,7 @@ export default function CartPage() {
                                                 <td className='cat-edit'>
                                                     <a href="#" onClick={(e) => {
                                                         e.preventDefault(),
-                                                        handelItemRemove(item)
+                                                            handelItemRemove(item)
                                                     }}>
                                                         <img src="/images/shop/del.png" alt="" />
                                                     </a>
@@ -139,11 +116,12 @@ export default function CartPage() {
 
                             </table>
                         </div>
-          </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
 
-  )
+    )
 }
