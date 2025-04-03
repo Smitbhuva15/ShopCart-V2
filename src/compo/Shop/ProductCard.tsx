@@ -19,7 +19,7 @@ type producttype={
     }[]
 }
 export default function ProductCard({ gridList,products}:producttype) {
-    console.log(products)
+  
   return (
     <div className={`shop-product-wrap row justify-content-center ${gridList ? "grid" : "list"}`}>
   {
