@@ -1,17 +1,18 @@
 import { cartType, fetchtype } from "@/types/interface";
+import CheckOutPage from "./CheckOutPage";
 
 
-export default function CartBottom({data}:{data?:fetchtype}) {
+export default function CartBottom({ data }: { data?: fetchtype }) {
 
-       const calculateTotalPrice=(item: cartType)=>{
-            return Number(item.price)*item.quantity
-        }
+    const calculateTotalPrice = (item: cartType) => {
+        return Number(item.price) * item.quantity
+    }
 
-      // cart subtotal
-      const cartSubtotal = data?.user?.produtcs?.reduce((total, item) => {
+    // cart subtotal
+    const cartSubtotal = data?.user?.produtcs?.reduce((total, item) => {
         return total + calculateTotalPrice(item);
-      }, 0);
-      
+    }, 0);
+
 
     // order total
 
@@ -27,12 +28,7 @@ export default function CartBottom({data}:{data?:fetchtype}) {
                     <input type="submit" value="Apply Coupon" />
                 </form>
 
-                <form className='cart-checkout'>
-                    <input type="submit" value="Update Cart" />
-                    <div>
-                        {/* <CheckOutPage /> */}
-                    </div>
-                </form>
+
             </div>
 
             {/* shopping box */}
@@ -43,18 +39,18 @@ export default function CartBottom({data}:{data?:fetchtype}) {
                         <div className='calculate-shiping'>
                             <h3>Calculate Shiping</h3>
                             <div className='outline-select'>
-                            <input type="text" name="postalcode" id="address"  placeholder='Address*'  />
-                                
+                                <input type="text" name="postalcode" id="address" placeholder='Address*' />
+
                             </div>
                             <div className='outline-select'>
-                            <input type="text" name="postalcode" id="city"  placeholder='City*'  />  
+                                <input type="text" name="postalcode" id="city" placeholder='City*' />
                             </div>
 
                             <div className='outline-select shipping-select'>
-                            <input type="text" name="postalcode" id="country"  placeholder='Country*'  />
+                                <input type="text" name="postalcode" id="country" placeholder='Country*' />
 
                             </div>
-                            <input type="text" name="postalcode" id="postlcode"  placeholder='Postocode/ZIP*' className='cart-page-input-text' />
+                            <input type="text" name="postalcode" id="postlcode" placeholder='Postocode/ZIP*' className='cart-page-input-text' />
                             <button type='submit'>Update Address</button>
                         </div>
                     </div>
@@ -78,6 +74,13 @@ export default function CartBottom({data}:{data?:fetchtype}) {
                                 </li>
                             </ul>
 
+
+                            <form className='cart-checkout'>
+                              
+                                <div>
+                                    <CheckOutPage data={data} orderTotal={orderTotal} />
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
