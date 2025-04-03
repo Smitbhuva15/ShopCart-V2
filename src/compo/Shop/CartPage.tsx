@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import useSWR, { mutate } from 'swr';
 import { cartType, fetchtype } from "@/types/interface";
 import { Loader2 } from 'lucide-react';
+import CartBottom from "./CartBottom";
 
 
 
@@ -72,8 +73,13 @@ export default function CartPage() {
             item.quantity -= 1;
 
         }
+   
         setCartItems([...cartItems]);
         handelincreasedecrease(item)
+    }
+
+    const calculateTotalPrice=(item: cartType)=>{
+        return Number(item.price)*item.quantity
     }
 
 
@@ -159,9 +165,9 @@ export default function CartPage() {
                                                     </div>
                                                 </td>
 
-                                                {/* <td className='cat-toprice'>
+                                                <td className='cat-toprice'>
                                                     ${calculateTotalPrice(item)}
-                                                </td> */}
+                                                </td>
 
                                                 <td className='cat-edit'>
                                                     <a href="#" onClick={(e) => {
@@ -179,6 +185,9 @@ export default function CartPage() {
 
                             </table>
                         </div>
+
+                        {/* cart bottom  */}
+                        <CartBottom data={data} />
 
                     </div>
                 </div>
