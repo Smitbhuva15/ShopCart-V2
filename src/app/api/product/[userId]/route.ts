@@ -1,12 +1,13 @@
 import { prisma } from "@/prishma"
 import { NextResponse } from "next/server"
 
+interface paramstype{
+    userId:string
+}
 
-export async function POST(req:Request) {
+export async function GET(req:Request,{params}:{params:paramstype}) {
+   const userId=params?.userId;
 
-
- const{userId}=await req.json()
- 
  try {
     const userdata=await prisma.user.findUnique({
         where:{
@@ -19,7 +20,7 @@ export async function POST(req:Request) {
         }
     })
 
-    return NextResponse.json({ message: "userdata" ,user:userdata}, { status: 200 })
+    return NextResponse.json({user:userdata}, { status: 200 })
 
     
  } catch (error) {

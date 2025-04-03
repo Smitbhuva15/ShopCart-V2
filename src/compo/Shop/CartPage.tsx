@@ -1,40 +1,20 @@
 "use client"
 import Link from "next/link";
 import PageHeader from "../Common/PageHeader";
-import { useEffect, useState } from "react";
-import { product_data } from "@/lib/product";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+import useSWR, { mutate } from 'swr';
+import { cartType, fetchtype } from "@/types/interface";
+import { Loader2 } from 'lucide-react';
 
 
-type LocalItemType = {
-    item:
-    {
-        id: string;
-        img: string;
-        name: string;
-        price: number;
-        quantity: number;
-        size: string;
-        color: string;
-        coupon: string | undefined;
-    }
+
+
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+    return res.json();
 };
-
-
-interface cartType {
-
-    id: string
-    productId: string
-    quantity: number
-    coupon: string
-    color: string
-    size: string
-    userId: string
-    name: string
-    img: string
-    price: string
-
-}
 
 export default function CartPage() {
 
@@ -42,79 +22,52 @@ export default function CartPage() {
     const [cartItems, setCartItems] = useState<cartType[]>([]);
     const { data: session, } = useSession()
 
-    const data = {
-        userId: session?.user?.id
-    }
 
+    const { data, error, isLoading } = useSWR<fetchtype>(`/api/product/${session?.user?.id}`, fetcher)
 
-    const getCartData = async () => {
+    const handelincreasedecrease = async (item: cartType) => {
 
         try {
-            const res = await fetch('/api/product', {
-                method: "POST",
+            const response = await fetch("/api/addproduct", {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    productId: item.productId,
+                    userId: item.userId,
+                    quantity: item.quantity,
+                })
             })
-            if (res.ok) {
-                const message = await res.json();
-            
-                setCartItems(message.user.produtcs)
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message)
             }
             else {
-                const errormessage = await res.json();
-                console.log(errormessage.message)
+                const errmessage = await response.json();
+                console.log(errmessage.message)
+
             }
+
         } catch (error) {
             console.log("error found", error)
         }
     }
 
-    const handelincreasedecrease=async(item:cartType)=>{
-       
-        try {
-            const response=await fetch("/api/addproduct",{
-                method:"PATCH",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({
-                    productId:item.productId,
-                    userId:item.userId,
-                    quantity:item.quantity,
-                })
-            })
-        
-            if(response.ok){
-                const data=await response.json();
-                console.log(data.message)
-            }
-            else{
-                const errmessage=await response.json();
-                console.log(errmessage.message)
-                
-            }
-            
-          } catch (error) {
-            console.log("error found",error)
-          }
-    }
-    
 
- 
     // handel to increase
-    const handelIncrease = (item:cartType) => {
+    const handelIncrease = (item: cartType) => {
         item.quantity += 1;
         setCartItems([...cartItems]);
-        
+
         handelincreasedecrease(item)
-       
+
     }
 
     // handel to decrease
 
-    const handelDecraese = (item:cartType) => {
+    const handelDecraese = (item: cartType) => {
         if (item.quantity > 1) {
             item.quantity -= 1;
 
@@ -123,43 +76,45 @@ export default function CartPage() {
         handelincreasedecrease(item)
     }
 
-   
-    const handelItemRemove=async(item:cartType)=>{
+
+    const handelItemRemove = async (item: cartType) => {
         try {
-            const response=await fetch("/api/addproduct",{
-                method:"DELETE",
-                headers:{
-                    "Content-Type":"application/json"
+            const response = await fetch("/api/addproduct", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body:JSON.stringify({
-                    productId:item.productId,
-                    userId:item.userId,
+                body: JSON.stringify({
+                    productId: item.productId,
+                    userId: item.userId,
                 })
             })
-        
-            if(response.ok){
-                const data=await response.json();
+
+            if (response.ok) {
+                const data = await response.json();
                 console.log(data.message)
+                mutate(`/api/product/${session?.user?.id}`);
             }
-            else{
-                const errmessage=await response.json();
+            else {
+                const errmessage = await response.json();
                 console.log(errmessage.message)
-                
+
             }
-            
-          } catch (error) {
-            console.log("error found",error)
-          }
+
+        } catch (error) {
+            console.log("error found", error)
+        }
     }
 
-    useEffect(() => {
-        if (session?.user?.id) {
-            getCartData();
-        }
-    }, [session])
 
     return (
-        <div>
+        isLoading ? (
+            <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
+            <Loader2 className="h-9 w-9 animate-spin text-gray-500" />
+          </div>
+        )
+        : 
+        (<div>
             <PageHeader title={"shop Cart"} curPage={"Cart Page"} />
             <div className='shop-cart padding-tb'>
                 <div className='container'>
@@ -181,7 +136,7 @@ export default function CartPage() {
                                 {/* tabel body */}
                                 <tbody>
                                     {
-                                        cartItems && cartItems.map((item, index) => (
+                                        data?.user?.produtcs.map((item, index) => (
                                             <tr key={index}>
                                                 <td className='product-item cat-product'>
                                                     <div className='p-thumb'>
@@ -228,7 +183,7 @@ export default function CartPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>)
 
 
     )
