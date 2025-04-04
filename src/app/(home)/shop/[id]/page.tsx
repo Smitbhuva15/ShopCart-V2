@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
-type producttype = {
+ type producttype = {
         id: string;
         category: string;
         name: string;

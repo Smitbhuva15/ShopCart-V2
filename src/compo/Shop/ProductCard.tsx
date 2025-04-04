@@ -2,9 +2,9 @@ import Link from 'next/link';
 import React from 'react'
 
 
-type producttype={
-    gridList :boolean
-    products :{
+type producttype = {
+    gridList: boolean
+    products: {
         id: string;
         category: string;
         name: string;
@@ -18,15 +18,15 @@ type producttype={
         quantity: number;
     }[]
 }
-export default function ProductCard({ gridList,products}:producttype) {
-  
-  return (
-    <div className={`shop-product-wrap row justify-content-center ${gridList ? "grid" : "list"}`}>
-  {
+export default function ProductCard({ gridList, products }: producttype) {
+
+    return (
+        <div className={`shop-product-wrap row justify-content-center ${gridList ? "grid" : "list"}`}>
+            {
                 products.map((product, i) => (
-                
+
                     <div key={i} className='col-lg-4 col-md-6 col-12'>
-                        
+
 
                         {/* product grid item */}
                         <div className='product-item'>
@@ -40,26 +40,26 @@ export default function ProductCard({ gridList,products}:producttype) {
 
                                 <div className='product-action-link'>
                                     <Link href={`/shop/${product.id}`}><i className='icofont-eye'></i></Link>
-                                    <a href="#"><i className='icofont-heart'></i></a>
+                                   
                                     <Link href="/cart-page"><i className='icofont-cart-alt'></i></Link>
                                 </div>
-                                 {/* product content */}
-                                 <div className='product-content'>
+                                {/* product content */}
+                                <div className='product-content'>
                                     <h5>
                                         <Link href={`/shop/${product.id}`}>{product.name}</Link>
                                     </h5>
                                     <p>
-                                        
+
                                     </p>
-                                    <h6>${product.price}</h6>
-                                 </div>
+                                    <h6>₹{product.price}</h6>
+                                </div>
                                 <div>
 
                                 </div>
                             </div>
                         </div>
-                           
-                           {/* product list item */}
+
+                        {/* product list item */}
 
                         <div className='product-list-item  '>
                             {/* product image */}
@@ -72,30 +72,26 @@ export default function ProductCard({ gridList,products}:producttype) {
 
                                 <div className='product-action-link'>
                                     <Link href={`/shop/${product.id}`}><i className='icofont-eye'></i></Link>
-                                    <a href="#"><i className='icofont-heart'></i></a>
+                                   
                                     <Link href="/cart-page"><i className='icofont-cart-alt'></i></Link>
                                 </div>
-                                 {/* product content */}
-                                 <div className='product-content '>
+                                {/* product content */}
+                                <div className='product-content '>
                                     <h5>
                                         <Link href={`/shop/${product.id}`}>{product.name}</Link>
                                     </h5>
-                                    <h6>${product.price}</h6>
-                                 </div>
+                                    <h6>₹{product.price}</h6>
+                                </div>
                                 <div>
 
                                 </div>
                             </div>
                         </div>
-                            
-
-
-
 
 
                     </div>
                 ))
             }
-    </div>
-  )
+        </div>
+    )
 }

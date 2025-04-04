@@ -1,6 +1,7 @@
 "use client"
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast, { Toaster } from 'react-hot-toast';
@@ -37,8 +38,12 @@ type Inputs = {
 export default function ProductDisplay({ item }: itemtype) {
 
     const {data:session,status}=useSession();
-    
-  
+    const routes=useRouter();
+
+    if(status==="unauthenticated"){
+        routes.push("/login")
+    }
+
     const [preQuntity, setPreQuntity] = useState(1);
     const handelDecrease = (e: React.MouseEvent<HTMLInputElement>) => {
         if (preQuntity > 1) {
@@ -116,7 +121,7 @@ export default function ProductDisplay({ item }: itemtype) {
             <div >
                 <h4>{item.name}</h4>
 
-                <h4>${item.price}</h4>
+                <h4>₹{item.price}</h4>
                 <h6>{item.seller}</h6>
 
             </div>
@@ -171,9 +176,22 @@ export default function ProductDisplay({ item }: itemtype) {
                     <button type='submit' className='lab-btn'>
                         <span>Add to Cart</span>
                     </button>
-                    <Link href="/cart-page" className='lab-btn bg-primary'>
-                        <span>Check Out</span>
-                    </Link>
+                    {
+                    status==="unauthenticated"?
+                        (
+                            <Link href="/login" className='lab-btn bg-primary'>
+                            <span>Check Out</span>
+                        </Link>
+                        )
+                        :
+                        (  <Link href="/cart-page" className='lab-btn bg-primary'>
+                            <span>Check Out</span>
+                        </Link>
+                            
+                        )
+
+                    }
+                  
 
                 </form>
             </div>

@@ -56,7 +56,7 @@ export default function Search({ products, gridList }: producttype) {
                                     <p >
                                         <Link href={`/shop/${product.id}`}>{product.name}</Link>
                                     </p>
-                                    <h6>${product.price}</h6>
+                                    <h6>₹{product.price}</h6>
                                 </div>
 
                             </div>

@@ -62,7 +62,7 @@ export default function CartBottom({ data }: { data?: fetchtype }) {
                             <ul className='lab-ul'>
                                 <li>
                                     <span className='pull-left'>Cart Subtotal</span>
-                                    <p className='pull-right'>${cartSubtotal}</p>
+                                    <p className='pull-right'>₹{cartSubtotal}</p>
                                 </li>
                                 <li>
                                     <span className='pull-left'>Shipping And Handling</span>
@@ -70,7 +70,7 @@ export default function CartBottom({ data }: { data?: fetchtype }) {
                                 </li>
                                 <li>
                                     <span className='pull-left'>Order Total</span>
-                                    <p className='pull-right'>${orderTotal.toFixed(2)}</p>
+                                    <p className='pull-right'>₹{orderTotal.toFixed(2)}</p>
                                 </li>
                             </ul>
 

@@ -24,10 +24,12 @@ export interface fetchtype {
             username: string
             email: string
             itemName: string
-            orderId: string
             image: string
             userId: string,
-            productIds :string[]
+            products :string[]
+            orderId: string
+            createdAt : string
+        
         }[]
         produtcs: {
             id: string

@@ -54,19 +54,20 @@ model Item {
 }
 
 model Order {
-  id         String   @id @default(uuid())
+  id         String    @id @default(uuid())
   amount     Int
   username   String?
   email      String?
   itemName   String?
   orderId    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   image      String?
-  productIds String[]
   userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products   String[] 
 }
+
 
 model Resister {
   id        String   @id @default(uuid())

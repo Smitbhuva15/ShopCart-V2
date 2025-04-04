@@ -5,6 +5,7 @@ import React from 'react'
 export async function POST(res:Request) {
  
  const{userId ,amount,username,email,orderId,productIds}=await res.json();
+
  
  try {
    
@@ -15,7 +16,7 @@ export async function POST(res:Request) {
             username,
             email,
             orderId,
-            productIds
+            products:productIds
         }
     })
 
