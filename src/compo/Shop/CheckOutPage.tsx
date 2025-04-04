@@ -1,45 +1,68 @@
 import { fetchtype } from "@/types/interface";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 interface razorpayType {
     razorpay_order_id: string,
-    razorpay_payment_id   : string
-    razorpay_signature : string
+    razorpay_payment_id: string
+    razorpay_signature: string
 }
 
 
 export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, orderTotal: number }) {
 
-    
+    const [allProductId, setAllProductId] = useState<string[]>()
 
     const { data: session } = useSession();
 
     const routes = useRouter()
 
-    const handelorder=async(response:razorpayType,orderId:string, order_amount:number)=>{
+
+    useEffect(() => {
+        if (data?.user?.produtcs) {
+            const productIds = data.user.produtcs.map((product) => product.productId);
+            setAllProductId(productIds); 
+        }
+    }, [data, orderTotal]);
+
+
+    const handelorder = async (response: razorpayType, orderId: string, order_amount: number) => {
         try {
-             
-            const res=await fetch('/api/handelorder',{
-                method:"POST",
-                headers:{
-                    "Content-type":"application/json"
+            if (data?.user?.produtcs) {
+                const productIds = data.user.produtcs.map((product) => product.productId);
+                setAllProductId(productIds);
+            }
+        
+            const res = await fetch('/api/handelorder', {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
                 },
-                body:JSON.stringify({
-                    userId :session?.user?.id,
-                    amount:order_amount,
-                    username:session?.user?.firstName,
-                    email:session?.user?.email,
-                    orderId,
-                    
-                    itemName:"null"
+                body: JSON.stringify({
+                    userId: session?.user?.id,
+                    amount: order_amount,
+                    username: session?.user?.firstName,
+                    email: session?.user?.email,
+                    orderId: orderId,
+                    productIds: allProductId
+
                 })
             })
 
+            if (res.ok) {
+                const message = await res.json();
+                console.log(message.message);
+            }
+            else {
+                const errmessage = await res.json();
+                console.log(errmessage.message);
+            }
+
 
         } catch (error) {
-            console.log(error,"error found")
+            console.log(error, "error found")
         }
 
     }
@@ -96,10 +119,12 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
                     description: "Booking Your House Confirm!!",
                     order_id: order.id,
                     image: `/images/logo/logo.png`,
-                    handler: function (response:razorpayType) {
-                      
+                    handler: function (response: razorpayType) {
+
                         handelorder(response, order.id, order.amount)
-                        routes.push('/yourorder');
+                        setTimeout(()=>{
+                         routes.push("/yourorder")
+                        },2000)
                         toast.success("Payment Successful! Payment ID: " + response.razorpay_payment_id);
 
                     },
@@ -132,6 +157,11 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
             <div className='coupon'>
                 <input type='button' value="Click to Pay " className="bg-orange-500 text-white font-bold" onClick={handlePayment} />
             </div>
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+            />
+
         </div>
     )
 }

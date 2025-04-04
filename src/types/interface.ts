@@ -26,7 +26,8 @@ export interface fetchtype {
             itemName: string
             orderId: string
             image: string
-            userId: string
+            userId: string,
+            productIds :string[]
         }[]
         produtcs: {
             id: string

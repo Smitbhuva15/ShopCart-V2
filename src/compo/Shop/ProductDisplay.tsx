@@ -39,7 +39,7 @@ export default function ProductDisplay({ item }: itemtype) {
     const {data:session,status}=useSession();
     
   
-    const [preQuntity, setPreQuntity] = useState(item.quantity);
+    const [preQuntity, setPreQuntity] = useState(1);
     const handelDecrease = (e: React.MouseEvent<HTMLInputElement>) => {
         if (preQuntity > 1) {
             setPreQuntity(preQuntity - 1);
