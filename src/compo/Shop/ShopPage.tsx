@@ -1,11 +1,12 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { product_data } from "@/lib/product";
 import Pagination from "./Pagination";
 import PopulerPost from "../Common/PopulerPost";
 import Tag from "../Common/Tag";
 import Search from "./Search";
+import { Loader2 } from "lucide-react";
 
 
 const showResult = "Showing 01-07 of 63 Result";
@@ -13,9 +14,12 @@ const showResult = "Showing 01-07 of 63 Result";
 
 export default function ShopPage() {
 
+
+
   const [gridList, SetGridList] = useState(true);
-  const [products, setProducts] = useState(product_data);
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true)
   const productPerPag = 9;
 
   const indextOfLastProduct = currentPage * productPerPag;
@@ -25,6 +29,33 @@ export default function ShopPage() {
     setCurrentPage(pageNumber);
   }
 
+  const getData = async () => {
+    setIsLoading(true)
+    try {
+      const res = await fetch('/api/newproductadd', {
+        method: "GET"
+      })
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data.items)
+        console.log(data.message)
+      }
+      else {
+        const errdata = await res.json();
+        console.log(errdata.message)
+      }
+
+    } catch (error) {
+      console.log("error found", error)
+    }
+    finally {
+      setIsLoading(false)
+    }
+
+  }
+  useEffect(() => {
+    getData();
+  }, [])
 
 
   return (
@@ -47,9 +78,22 @@ export default function ShopPage() {
               </div>
 
               {/* Card */}
-              <div>
-                <ProductCard gridList={gridList} products={currentProducts} />
-              </div>
+              {
+                isLoading ?
+                  (
+                    <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
+                      <Loader2 className="h-9 w-9 animate-spin text-gray-500" />
+                    </div>
+                  ) :
+                  (
+                    <div>
+                      <ProductCard gridList={gridList} products={currentProducts} />
+                    </div>
+                  )
+
+
+              }
+
 
               <Pagination
                 productPerPag={productPerPag}

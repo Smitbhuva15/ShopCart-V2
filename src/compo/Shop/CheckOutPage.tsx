@@ -9,11 +9,40 @@ interface razorpayType {
     razorpay_signature : string
 }
 
+
 export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, orderTotal: number }) {
+
+    
 
     const { data: session } = useSession();
 
     const routes = useRouter()
+
+    const handelorder=async(response:razorpayType,orderId:string, order_amount:number)=>{
+        try {
+             
+            const res=await fetch('/api/handelorder',{
+                method:"POST",
+                headers:{
+                    "Content-type":"application/json"
+                },
+                body:JSON.stringify({
+                    userId :session?.user?.id,
+                    amount:order_amount,
+                    username:session?.user?.firstName,
+                    email:session?.user?.email,
+                    orderId,
+                    
+                    itemName:"null"
+                })
+            })
+
+
+        } catch (error) {
+            console.log(error,"error found")
+        }
+
+    }
 
     const loadRazorpayScript = () => {
         return new Promise((resolve) => {
@@ -69,7 +98,7 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
                     image: `/images/logo/logo.png`,
                     handler: function (response:razorpayType) {
                       
-                        // handelorder(response, order.id, order.amount)
+                        handelorder(response, order.id, order.amount)
                         routes.push('/yourorder');
                         toast.success("Payment Successful! Payment ID: " + response.razorpay_payment_id);
 

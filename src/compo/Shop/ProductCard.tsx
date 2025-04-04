@@ -13,7 +13,7 @@ type producttype={
         stock: number;
         ratings: number;
         ratingsCount: number;
-        img: string;
+        image: string;
         shipping: number;
         quantity: number;
     }[]
@@ -33,7 +33,7 @@ export default function ProductCard({ gridList,products}:producttype) {
                             {/* product image */}
                             <div className='product-thumb'>
                                 <div className='pro-thumb'>
-                                    <img src={product.img} alt="" />
+                                    <img src={product.image} alt="" />
                                 </div>
 
                                 {/* product action link */}
@@ -65,7 +65,7 @@ export default function ProductCard({ gridList,products}:producttype) {
                             {/* product image */}
                             <div className='product-thumb d-flex'>
                                 <div className='pro-thumb'>
-                                    <img src={product.img} alt="" />
+                                    <img src={product.image} alt="" />
                                 </div>
 
                                 {/* product action link */}

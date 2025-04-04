@@ -17,7 +17,7 @@ type itemtype = {
         stock: number;
         ratings: number;
         ratingsCount: number;
-        img: string;
+        image: string;
         shipping: number;
         quantity: number;
     }
@@ -79,7 +79,7 @@ export default function ProductDisplay({ item }: itemtype) {
             size: data?.size || "default",
             color: data?.color || "default",
             coupon: data?.coupon || null,
-            img:item?.img,
+            img:item?.image,
             name:item?.name,
             price:item?.price
           };

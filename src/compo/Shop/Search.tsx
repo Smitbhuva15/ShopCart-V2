@@ -13,7 +13,7 @@ type producttype = {
         stock: number;
         ratings: number;
         ratingsCount: number;
-        img: string;
+        image: string;
         shipping: number;
         quantity: number;
     }[],
@@ -49,7 +49,7 @@ export default function Search({ products, gridList }: producttype) {
                             <div className='d-flex gap-3 p-2'>
                                 <div>
                                     <div className='pro-thumb h-25'>
-                                        <img src={product.img} alt="" width={70} className='flex-{grow|shink}-0' />
+                                        <img src={product.image} alt="" width={70} className='flex-{grow|shink}-0' />
                                     </div>
                                 </div>
                                 <div className='product-content'>

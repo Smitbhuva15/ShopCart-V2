@@ -19,6 +19,7 @@ const fetcher = async (url: string) => {
 
 export default function CartPage() {
 
+    
 
     const [cartItems, setCartItems] = useState<cartType[]>([]);
     const { data: session, } = useSession()
