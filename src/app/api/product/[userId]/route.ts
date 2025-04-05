@@ -14,7 +14,11 @@ export async function GET(req:Request,{params}:{params:paramstype}) {
             id:userId
         },
         include:{
-            orders:true,
+            orders:{
+              orderBy:{
+                createdAt:'desc'
+              }
+            },
             produtcs:true,
             itmes:true
         }

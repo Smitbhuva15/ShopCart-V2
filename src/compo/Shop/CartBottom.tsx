@@ -1,9 +1,87 @@
 import { cartType, fetchtype } from "@/types/interface";
 import CheckOutPage from "./CheckOutPage";
+import toast, { Toaster } from 'react-hot-toast';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useForm, SubmitHandler } from "react-hook-form"
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
+
+type Inputs = {
+    address: string;
+    city: string;
+    Postocode: string;
+    country: string;
+
+};
+
+
+const schema = yup
+    .object()
+    .shape({
+        address: yup.string().min(3, "address must be at least 10 characters").required(),
+        city: yup.string().min(3, " city must be at least 3 characters").required("Contact Number is require"),
+        Postocode: yup.string().min(5, "Postcode must be at least 5 characters").required(" Postcode must be required"),
+        country: yup.string().min(3, "country must be at least 3 characters").required()
+
+    })
+    .required();
 
 export default function CartBottom({ data }: { data?: fetchtype }) {
 
+     const {data:session}=useSession();
+     
+     const router=useRouter()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<Inputs>({
+        resolver: yupResolver(schema),
+    });
+
+
+    const handleFormError = () => {
+        Object.values(errors).forEach((error) => {
+            const fieldError = error?.message as string;
+            if (fieldError) {
+                toast.error(fieldError);
+            }
+        });
+    };
+
+
+    const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+             const newdata={
+                userId:session?.user?.id,
+                ...data
+             }
+        try {
+            const res = await fetch("/api/address", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newdata),
+            });
+
+            if (res.ok) {
+                const message = await res.json();
+                reset()
+                toast.success(message.message)
+               window.location.replace("/cart-page")          
+            
+                
+            }
+            else{
+                const errmessage = await res.json();
+                toast.error(errmessage.message)
+                router.replace('/cart-page')
+            }
+        } catch (error) {
+            console.log(error, "error found");
+        }
+    };
     const calculateTotalPrice = (item: cartType) => {
         return Number(item.price) * item.quantity
     }
@@ -38,20 +116,23 @@ export default function CartBottom({ data }: { data?: fetchtype }) {
                     <div className='col-md-6 col-12'>
                         <div className='calculate-shiping'>
                             <h3>Calculate Shiping</h3>
-                            <div className='outline-select'>
-                                <input type="text" name="postalcode" id="address" placeholder='Address*' />
+                            <form className='contact-form' onSubmit={handleSubmit(onSubmit, handleFormError)}>
 
-                            </div>
-                            <div className='outline-select'>
-                                <input type="text" name="postalcode" id="city" placeholder='City*' />
-                            </div>
+                                <input type="text" id="address" placeholder='Address* ' className="mb-3" defaultValue={data?.user?.address || ""} {...register("address")} />
 
-                            <div className='outline-select shipping-select'>
-                                <input type="text" name="postalcode" id="country" placeholder='Country*' />
 
-                            </div>
-                            <input type="text" name="postalcode" id="postlcode" placeholder='Postocode/ZIP*' className='cart-page-input-text' />
-                            <button type='submit'>Update Address</button>
+
+                                <input type="text" id="city" placeholder='City*' className="mb-3" defaultValue={data?.user?.city || ""}  {...register("city")} />
+
+
+
+                                <input type="text" id="country" placeholder='Country*' className="mb-3" defaultValue={data?.user?.country|| ""} {...register("country")} />
+
+
+                                <input type="text" id="Postocode" placeholder='Postcode/ZIP*' className="mb-3" defaultValue={data?.user?.Postocode || ""} {...register("Postocode")} />
+
+                                <button type='submit'>Update Address</button>
+                            </form>
                         </div>
                     </div>
                     {/* right side */}
@@ -76,9 +157,9 @@ export default function CartBottom({ data }: { data?: fetchtype }) {
 
 
                             <form className='cart-checkout'>
-                              
+
                                 <div>
-                                    <CheckOutPage data={data} orderTotal={orderTotal} />
+                                    <CheckOutPage data1={data} orderTotal={orderTotal} />
                                 </div>
                             </form>
                         </div>
@@ -86,6 +167,7 @@ export default function CartBottom({ data }: { data?: fetchtype }) {
                 </div>
 
             </div>
+           
         </div>
     )
 }

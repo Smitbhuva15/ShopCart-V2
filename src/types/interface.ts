@@ -5,6 +5,10 @@ export interface fetchtype {
         lastName: string
         email: string
         password: string
+        address: string | null
+        Postocode: string | null
+        city: string | null
+        country: string | null
 
         itmes: {
             id: string
@@ -26,10 +30,10 @@ export interface fetchtype {
             itemName: string
             image: string
             userId: string,
-            products :string[]
+            products: string[]
             orderId: string
-            createdAt : string
-        
+            createdAt: string
+
         }[]
         produtcs: {
             id: string

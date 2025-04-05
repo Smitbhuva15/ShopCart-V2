@@ -74,7 +74,7 @@ export default function SignUp() {
         const message = await res.json();
         reset()
         toast.success(message.message)
-
+        router.push('/login');
       }
       else {
         const errmessage = await res.json();

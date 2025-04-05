@@ -3,38 +3,35 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import useSWR from "swr";
 
 interface razorpayType {
     razorpay_order_id: string,
     razorpay_payment_id: string
     razorpay_signature: string
 }
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+    return res.json();
+  };
+  
 
-
-export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, orderTotal: number }) {
+export default function CheckOutPage({ data1, orderTotal }: { data1?: fetchtype, orderTotal: number }) {
 
     const [allProductId, setAllProductId] = useState<string[]>()
-
-    const { data: session } = useSession();
-
-    const routes = useRouter()
-
-
-    useEffect(() => {
-        if (data?.user?.produtcs) {
-            const productIds = data.user.produtcs.map((product) => product.productId);
-            setAllProductId(productIds); 
-        }
-    }, [data, orderTotal]);
-
+    const routes=useRouter();
+    const{data:session}=useSession();
+    const { data, error, isLoading } = useSWR<fetchtype>(`/api/product/${session?.user?.id}`, fetcher)
+  
 
     const handelorder = async (response: razorpayType, orderId: string, order_amount: number) => {
         try {
-            if (data?.user?.produtcs) {
-                const productIds = data.user.produtcs.map((product) => product.productId);
+            if (data1?.user?.produtcs) {
+                const productIds = data1.user.produtcs.map((product) => product.productId);
                 setAllProductId(productIds);
             }
-        
+
             const res = await fetch('/api/handelorder', {
                 method: "POST",
                 headers: {
@@ -86,7 +83,13 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
         });
     };
 
-    const handlePayment = async () => {
+    const handeladdress=()=>{
+        toast.error("Please enter your address before proceeding")
+        routes.refresh();
+    }
+
+    const handelPayment = async () => {
+        routes.refresh();
         const r1 = await loadRazorpayScript();
 
         if (!r1) {
@@ -122,9 +125,9 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
                     handler: function (response: razorpayType) {
 
                         handelorder(response, order.id, order.amount)
-                        setTimeout(()=>{
-                         routes.push("/yourorder")
-                        },2000)
+                        setTimeout(() => {
+                            routes.push("/yourorder")
+                        }, 2000)
                         toast.success("Payment Successfull! Payment ID: " + response.razorpay_payment_id);
 
                     },
@@ -152,11 +155,24 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
             console.log("client side payment internal server error", error)
         }
     }
+
+
+
     return (
         <div className='cart-checkout-box'>
-            <div className='coupon'>
-                <input type='button' value="Click to Pay " className="bg-orange-500 text-white font-bold" onClick={handlePayment} />
-            </div>
+            {
+                data?.user?.address === null ? (
+                    <div className='coupon'>
+                        <input type='button' value="Click to Pay " className="bg-orange-500 text-white font-bold" onClick={handeladdress} />
+                    </div>
+                ) : (
+                    <div className='coupon'>
+                        <input type='button' value="Click to Pay " className="bg-orange-500 text-white font-bold" onClick={handelPayment} />
+                    </div>
+                )
+                
+            }
+
             <Toaster
                 position="bottom-right"
                 reverseOrder={false}
