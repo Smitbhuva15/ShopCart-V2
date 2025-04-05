@@ -125,7 +125,7 @@ export default function CheckOutPage({ data, orderTotal }: { data?: fetchtype, o
                         setTimeout(()=>{
                          routes.push("/yourorder")
                         },2000)
-                        toast.success("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                        toast.success("Payment Successfull! Payment ID: " + response.razorpay_payment_id);
 
                     },
                     prefill: {

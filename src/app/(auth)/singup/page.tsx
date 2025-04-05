@@ -5,6 +5,8 @@ import * as yup from 'yup';
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast, { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 type Inputs = {
@@ -31,6 +33,12 @@ const title = "Resister";
 const btnText = "Resister Now"
 
 export default function SignUp() {
+
+  const{data:session,status}=useSession();
+   const router=useRouter()
+  if(status==='authenticated'){
+    router.push('/');
+  }
 
   const [isLoading, setIsLoading] = useState(false);
 

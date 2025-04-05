@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { fetchtype } from '@/types/interface';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -15,10 +16,15 @@ const fetcher = async (url: string) => {
 
 
 export default function YourOrder() {
-  const { data: session, } = useSession()
+  const { data: session,status } = useSession()
 
   const { data, error, isLoading } = useSWR<fetchtype>(`/api/product/${session?.user?.id}`, fetcher)
-  console.log(data)
+   const router = useRouter();
+  
+    if(status==='unauthenticated'){
+      router.push('/login');
+    }
+  
   return (
     <div>
       <PageHeader title="Your order Page" curPage="Order" />

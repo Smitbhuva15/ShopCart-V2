@@ -31,8 +31,14 @@ const btnText = "Login Now"
 export default function Login() {
 
   const [isLoading, setIsLoading] = useState(false);
+  const{data:session,status}=useSession();
 
   const router = useRouter();
+
+  if(status==='authenticated'){
+    router.push('/');
+  }
+
   const {
     register,
     handleSubmit,
@@ -60,11 +66,12 @@ export default function Login() {
       redirect: false
     })
 
-    console.log(signinData)
+  
     if (!signinData || !signinData.ok) {
       toast.error("Invalid Email or Password!!");
     } else {
       toast.success("User Login Successfully!!");
+      
       reset();
       router.push("/");
     }

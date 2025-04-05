@@ -70,7 +70,7 @@ export default function ProductCard({ gridList, products }: producttype) {
 
                                 {/* product action link */}
 
-                                <div className='product-action-link'>
+                                <div className='product-action-link '>
                                     <Link href={`/shop/${product.id}`}><i className='icofont-eye'></i></Link>
                                    
                                     <Link href="/cart-page"><i className='icofont-cart-alt'></i></Link>
