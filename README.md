@@ -36,6 +36,27 @@ The website offers a seamless and dynamic shopping experience with the following
 - **Payment Gateway**: Razorpay is integrated for secure online transactions.
 
 - **Additional Libraries**: Several other libraries and tools are used for enhanced functionality, security, and better user experience (such as form handling, UI components, and state management).
+<br><br>
 
+# ShopCart Website Preview
+
+
+<br>
+<p align="center">
+        <img src="public/images/website-demo/web1.png" width="750" alt="Website Demo">
+</p>
+
+<p align="center">
+        <img src="public/images/website-demo/web2.png" width="750" alt="Website Demo">
+</p>
+<p align="center">
+        <img src="public/images/website-demo/web3.png" width="750" alt="Website Demo">
+</p>
+<p align="center">
+        <img src="public/images/website-demo/web4.png" width="750" alt="Website Demo">
+</p>
+<p align="center">
+        <img src="public/images/website-demo/web5.png" width="750" alt="Website Demo">
+</p>
 
 
