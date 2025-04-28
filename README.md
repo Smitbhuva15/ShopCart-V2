@@ -1,13 +1,10 @@
-# ShopCart E-Commerce Website (V2)
+<h1 align="center">ShopCart E-Commerce Website (V2)</h1>
 
+### ShopCart (Version 2)
 
- ###  Shopcart (Version 2) is a fully functional e-commerce platform where users can browse, search, and purchase products according to their preferences.
+**ShopCart is a fully functional e-commerce platform where users can browse, search, and purchase products according to their preferences.**
 
-        The website offers a seamless and dynamic shopping experience with the following features:
-
- - **User Authentication**: A secure sign-in and sign-up system is implemented using NextAuth.js, ensuring a smooth and secure authentication process.       
-
- - **Product Searching** :  Users can easily search for products based on their choice.
+The website offers a seamless and dynamic shopping experience with the following features:
 
  - **Dynamic Cart Management**: Users can add products to their cart with the desired quantity, selected size, and color options. The cart dynamically updates as users modify their selections.
 
@@ -22,6 +19,8 @@
 - **Order Status**: Upon completing the payment, users are redirected to an order status page that clearly displays whether their order was successful or failed.
 
 - **Delivery Information**: After a successful order, an estimated delivery date is provided to keep users informed about their purchase.
+
+- **Contact Page** : A dedicated Contact page is available where users can submit queries or feedback, making communication with the support team easy and accessible.
 
 <br>
 
